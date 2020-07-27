@@ -21,11 +21,12 @@
 # MIX_APP_PATH ?= ./build/
 VERSION = 0.3.10
 # TARGET = ARMV8
-TARGET = ZEN
 PREFIX = $(MIX_APP_PATH)/priv
 BUILD  = $(MIX_APP_PATH)/obj
 
 ARCHIVE = "$(BUILD)/OpenBLAS.tar.gz"
+
+TRIPLET = $(shell cc -dumpmachine)
 
 TARGET_CFLAGS = $(shell src/detect_target.sh)
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
@@ -36,6 +37,24 @@ $(info "**** MIX_ENV set to [$(MIX_ENV)] ****")
 # Crosscompiled build
 LDFLAGS += -fPIC -shared
 CFLAGS += -fPIC
+
+# nerves_toolchain_arm_unknown_linux_gnueabihf 
+# nerves_toolchain_x86_64_unknown_linux_musl 
+# nerves_toolchain_armv6_rpi_linux_gnueabi 
+# nerves_toolchain_x86_64_unknown_linux_gnu 
+# nerves_toolchain_armv5tejl_unknown_linux_musleabi 
+# nerves_toolchain_mipsel_unknown_linux_musl 
+# nerves_toolchain_aarch64_unknown_linux_gnu 
+# nerves_toolchain_i586_unknown_linux_gnu"
+
+ifeq (arm,$(findstring arm,$(TRIPLET)))
+  TARGET=ARM7
+else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
+  TARGET=ARM8
+else
+    # Not found
+  TARGET = ZEN
+endif
 
 calling_from_make:
 	mix compile
