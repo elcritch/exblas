@@ -38,14 +38,15 @@ calling_from_make:
 
 all: install
 
-install: $(PREFIX) $(BUILD) archive compile
+install: archive compile
 	make install PREFIX=$(PREFIX)/
 
-compile:
+compile: $(PREFIX) $(BUILD) 
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
+	env | sort > /tmp/env.openblas.log
 	tar zxvf $(BUILD)/OpenBLAS.tar.gz
-	mv $(BLAS)/OpenBLAS-*/ $(BLAS)/OpenBLAS/
-	cd $(BLAS)/OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	mv $(BUILD)/OpenBLAS-*/ $(BUILD)/OpenBLAS/
+	cd $(BUILD)/OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 archive:
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v0.3.10 -o $(BUILD)/OpenBLAS.tar.gz

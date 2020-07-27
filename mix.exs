@@ -1,6 +1,7 @@
 defmodule ToolchainExtrasBlas do
   use Mix.Project
 
+  @app :toolchain_extras_blas
   @version "0.3.10"
   @source_url "https://github.com/elcritch/toolchain_extras_blas"
 
@@ -9,7 +10,7 @@ defmodule ToolchainExtrasBlas do
 
   def project do
     [
-      app: :circuits_gpio,
+      app: @app,
       version: @version,
       elixir: "~> 1.7",
       description: description(),
