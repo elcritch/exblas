@@ -25,6 +25,8 @@ TARGET = ZEN
 PREFIX = $(MIX_APP_PATH)/priv
 BUILD  = $(MIX_APP_PATH)/obj
 
+ARCHIVE = "$(BUILD)/OpenBLAS.tar.gz"
+
 TARGET_CFLAGS = $(shell src/detect_target.sh)
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
 CFLAGS += $(TARGET_CFLAGS)
@@ -38,19 +40,17 @@ CFLAGS += -fPIC
 calling_from_make:
 	mix compile
 
-all: install
+all: $(PREFIX) $(BUILD) compile
+	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make install PREFIX="$(PREFIX)/"
 
-install: $(PREFIX) $(BUILD) archive compile
-	make install PREFIX="$(PREFIX)/"
-
-compile: 
+compile: $(ARCHIVE)
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
 	env | sort > /tmp/env.openblas.log
 	tar -C "$(BUILD)/" -xvf "$(BUILD)/OpenBLAS.tar.gz" 
 	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
-archive:
-	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(BUILD)/OpenBLAS.tar.gz"
+$(ARCHIVE): 
+	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(ARCHIVE)"
 
 $(PREFIX) $(BUILD):
 	echo MAKE: $@
