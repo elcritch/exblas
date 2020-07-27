@@ -1,6 +1,6 @@
 # ToolchainExtrasBlas
 
-**TODO: Add description**
+Nerves Toolchain package for OpenBLAS. 
 
 ## Installation
 
