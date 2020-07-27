@@ -59,7 +59,7 @@ defmodule ToolchainExtrasBlas do
     [
       {:ex_doc, "~> 0.22", only: :docs, runtime: false},
       {:nerves, "~> 1.5.4 or ~> 1.6.0", runtime: false},
-      {:nerves_system_br, "1.12.1", runtime: false},
+      #{:nerves_system_br, "1.12.1", runtime: false},
       {:elixir_make, "~> 0.6", runtime: false}
     ]
   end
