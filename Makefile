@@ -19,7 +19,6 @@
 # ERL_LDFLAGS	additional linker flags for projects referencing Erlang libraries
 
 # MIX_APP_PATH ?= ./build/
-
 TARGET = ARMV8
 PREFIX = $(MIX_APP_PATH)/priv
 BUILD  = $(MIX_APP_PATH)/obj
@@ -43,6 +42,7 @@ install: $(PREFIX) $(BUILD) archive compile
 	make install PREFIX=$(PREFIX)/
 
 compile:
+	echo MIX_APP_PATH: $(MIX_APP_PATH)
 	tar zxvf $(BUILD)/OpenBLAS.tar.gz
 	mv $(BLAS)/OpenBLAS-*/ $(BLAS)/OpenBLAS/
 	cd $(BLAS)/OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
