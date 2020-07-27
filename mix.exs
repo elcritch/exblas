@@ -1,4 +1,4 @@
-defmodule NervesPruIcss.MixProject do
+defmodule ToolchainExtrasBlas.MixProject do
   use Mix.Project
 
   @app :toolchain_extras_blas
@@ -30,6 +30,7 @@ defmodule NervesPruIcss.MixProject do
         clean_files: ["openblas"],
         archive_script: "scripts/archive.sh"
       ],
+      target_tuple: :arm_unknown_linux_gnueabihf,
       platform_config: [],
       artifact_sites: [
         {:github_releases, "elcritch/#{@app}"}
@@ -46,6 +47,7 @@ defmodule NervesPruIcss.MixProject do
     [
       {:nerves, "~> 1.5", runtime: false},
       {:toolchain_extras, "~> 0.2", runtime: false},
+      {:nerves_toolchain_arm_unknown_linux_gnueabihf, "~> 1.3.0", runtime: true},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
