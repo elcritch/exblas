@@ -19,7 +19,9 @@
 # ERL_LDFLAGS	additional linker flags for projects referencing Erlang libraries
 
 # MIX_APP_PATH ?= ./build/
-TARGET = ARMV8
+VERSION = 0.3.10
+# TARGET = ARMV8
+TARGET = ZEN
 PREFIX = $(MIX_APP_PATH)/priv
 BUILD  = $(MIX_APP_PATH)/obj
 
@@ -39,17 +41,16 @@ calling_from_make:
 all: install
 
 install: archive compile
-	make install PREFIX=$(PREFIX)/
+	make install PREFIX="$(PREFIX)/"
 
 compile: $(PREFIX) $(BUILD) 
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
 	env | sort > /tmp/env.openblas.log
-	tar zxvf $(BUILD)/OpenBLAS.tar.gz
-	mv $(BUILD)/OpenBLAS-*/ $(BUILD)/OpenBLAS/
-	cd $(BUILD)/OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	tar -C "$(BUILD)/" -xvf "$(BUILD)/OpenBLAS.tar.gz" 
+	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 archive:
-	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v0.3.10 -o $(BUILD)/OpenBLAS.tar.gz
+	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(BUILD)/OpenBLAS.tar.gz"
 
 $(PREFIX) $(BUILD):
 	mkdir -p $@
