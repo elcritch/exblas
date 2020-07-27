@@ -1,78 +1,87 @@
-defmodule ToolchainExtrasBlas.MixProject do
+defmodule ToolchainExtrasBlas do
   use Mix.Project
 
-  @app :toolchain_extras_blas
+  @version "0.3.10"
+  @source_url "https://github.com/elcritch/toolchain_extras_blas"
+
+  {:ok, system_version} = Version.parse(System.version())
+  @elixir_version {system_version.major, system_version.minor, system_version.patch}
 
   def project do
     [
-      app: @app,
-      name: "toolchain_extras_blas",
-      version: "0.1.0",
-      elixir: "~> 1.8",
-      compilers: [:nerves_package] ++ Mix.compilers(),
-      nerves_package: nerves_package(),
-      description: "A package for OpenBLAS",
-      deps: deps(),
+      app: :circuits_gpio,
+      version: @version,
+      elixir: "~> 1.7",
+      description: description(),
       package: package(),
-      aliases: [loadconfig: [&bootstrap/1]],
+      source_url: @source_url,
+      compilers: [:elixir_make | Mix.compilers()],
+      make_targets: ["all"],
+      make_clean: ["clean"],
+      docs: docs(),
+      aliases: [format: [&format_c/1, "format"]],
+      start_permanent: Mix.env() == :prod,
+      build_embedded: true,
+      deps: deps(),
+      preferred_cli_env: %{
+        docs: :docs,
+        "hex.publish": :docs,
+        "hex.build": :docs
+      }
     ]
   end
 
-  def nerves_package do
-    [
-      name: @app,
-      type: :extras_toolchain,
-      platform: NervesExtras.Toolchain,
-      toolchain_extras: [
-        env_var: "BLAS",
-        build_path_link: "openblas",
-        build_script: "build.sh",
-        clean_files: ["openblas"],
-        archive_script: "scripts/archive.sh"
-      ],
-      target_tuple: :arm_unknown_linux_gnueabihf,
-      platform_config: [],
-      artifact_sites: [
-        {:github_releases, "elcritch/#{@app}"}
-      ],
-      checksum: package_files()
-    ]
-  end
+  def application, do: []
 
-  def application do
-    []
-  end
-
-  defp deps do
-    [
-      {:nerves, "~> 1.5", runtime: false},
-      {:toolchain_extras, "~> 0.2", runtime: false},
-      {:nerves_toolchain_arm_unknown_linux_gnueabihf, "~> 1.3.0", runtime: true},
-      {:ex_doc, ">= 0.0.0", only: :dev}
-    ]
+  defp description do
+    "OpenBlas build for Nerves"
   end
 
   defp package do
+    %{
+      files: [
+        "lib",
+        "src/*.[ch]",
+        "src/*.sh",
+        "mix.exs",
+        "README.md",
+        "PORTING.md",
+        "LICENSE",
+        "CHANGELOG.md",
+        "Makefile"
+      ],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => @source_url}
+    }
+  end
+
+  defp deps() do
     [
-      maintainers: ["Jaremy Creechley"],
-      files: package_files(),
-      licenses: ["Apache 2.0"],
-      links: %{"Github" => "https://github.com/elcritch/#{@app}"}
+      {:ex_doc, "~> 0.22", only: :docs, runtime: false},
+      {:nerves, "~> 1.5.4 or ~> 1.6.0", runtime: false},
+      {:nerves_system_br, "1.12.1", runtime: false},
+      {:elixir_make, "~> 0.6", runtime: false}
     ]
   end
 
-  defp package_files do
+  defp docs do
     [
-      "README.md",
-      "LICENSE",
-      "mix.exs",
-      "lib",
-      "config"
+      extras: ["README.md", "PORTING.md", "CHANGELOG.md"],
+      main: "readme",
+      source_ref: "v#{@version}",
+      source_url: @source_url
     ]
   end
 
-  defp bootstrap(args) do
-    Application.start(:nerves_bootstrap)
-    Mix.Task.run("loadconfig", args)
+  defp format_c([]) do
+    case System.find_executable("astyle") do
+      nil ->
+        Mix.Shell.IO.info("Install astyle to format C code.")
+
+      astyle ->
+        System.cmd(astyle, ["-n", "src/*.c"], into: IO.stream(:stdio, :line))
+    end
   end
+
+  defp format_c(_args), do: true
 end
