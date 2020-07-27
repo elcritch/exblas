@@ -40,11 +40,12 @@ calling_from_make:
 all: install
 
 install: $(PREFIX) $(BUILD) archive compile
+	make install PREFIX=$(PREFIX)/
 
 compile:
 	tar zxvf $(BUILD)/OpenBLAS.tar.gz
-	mv OpenBLAS-*/ OpenBLAS/
-	cd OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	mv $(BLAS)/OpenBLAS-*/ $(BLAS)/OpenBLAS/
+	cd $(BLAS)/OpenBLAS/ && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 archive:
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v0.3.10 -o $(BUILD)/OpenBLAS.tar.gz
