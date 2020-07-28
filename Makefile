@@ -72,6 +72,8 @@ all: $(PREFIX) $(BUILD) compile
 
 compile: $(ARCHIVE)
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
+	echo TRIPLET: $(TRIPLET)
+
 	# TODO: Debugging, remove
 	env | sort > /tmp/env.openblas.log
 	echo $(TARGET) >> /tmp/target.openblas.log
