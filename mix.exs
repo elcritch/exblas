@@ -1,7 +1,7 @@
 defmodule ToolchainExtrasBlas do
   use Mix.Project
 
-  @app :toolchain_extras_blas
+  @app :exblas
   @version "0.3.10"
   @source_url "https://github.com/elcritch/toolchain_extras_blas"
 
