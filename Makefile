@@ -47,14 +47,21 @@ CFLAGS += -fPIC
 # nerves_toolchain_aarch64_unknown_linux_gnu 
 # nerves_toolchain_i586_unknown_linux_gnu"
 
-ifeq (arm,$(findstring arm,$(TRIPLET)))
-  TARGET=ARM7
-else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
-  TARGET=ARM8
+# Check that we're on a supported build platform
+ifeq ($(CROSSCOMPILE),)
+    TARGET=
 else
-    # Not found
-  TARGET = ZEN
+  # Crosscompiled build
+  ifeq (arm,$(findstring arm,$(TRIPLET)))
+    TARGET= TARGET=ARM7
+  else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
+    TARGET= TARGET=ARM8
+  else
+      # Not found
+    TARGET=ZEN
+  endif
 endif
+
 
 calling_from_make:
 	mix compile
@@ -64,9 +71,12 @@ all: $(PREFIX) $(BUILD) compile
 
 compile: $(ARCHIVE)
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
+	# TODO: Debugging, remove
 	env | sort > /tmp/env.openblas.log
+	echo $(TARGET) >> /tmp/target.openblas.log
+
 	tar -C "$(BUILD)/" -xvf "$(BUILD)/OpenBLAS.tar.gz" 
-	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make $(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 $(ARCHIVE): 
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(ARCHIVE)"
