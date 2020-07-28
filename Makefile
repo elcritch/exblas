@@ -79,7 +79,7 @@ compile: $(ARCHIVE)
 	echo $(TARGET) >> /tmp/target.openblas.log
 
 	tar -C "$(BUILD)/" -xf "$(BUILD)/OpenBLAS.tar.gz" 
-	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) CC=$(CC) HOSTCC=$(gcc) NO_LAPACKE=1 NOFORTRAN=1
 
 $(ARCHIVE): 
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(ARCHIVE)"
