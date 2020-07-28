@@ -26,7 +26,7 @@ BUILD  = $(MIX_APP_PATH)/obj
 
 ARCHIVE = "$(BUILD)/OpenBLAS.tar.gz"
 
-TRIPLET = $(shell cc -dumpmachine)
+TRIPLET = $(shell $(CC) -dumpmachine)
 
 # TARGET_CFLAGS = $(shell src/detect_target.sh)
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
