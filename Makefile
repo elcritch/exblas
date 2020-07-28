@@ -54,9 +54,9 @@ else
   # Crosscompiled build
   DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
   ifeq (arm,$(findstring arm,$(TRIPLET)))
-    TARGET= TARGET=ARM7
+    TARGET=ARM7
   else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
-    TARGET= TARGET=ARM8
+    TARGET=ARM8
   else
       # Not found
     TARGET=ZEN
@@ -79,7 +79,7 @@ compile: $(ARCHIVE)
 	echo $(TARGET) >> /tmp/target.openblas.log
 
 	tar -C "$(BUILD)/" -xf "$(BUILD)/OpenBLAS.tar.gz" 
-	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make $(TARGET) NO_LAPACKE=1 NOFORTRAN=1
+	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make TARGET=$(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 $(ARCHIVE): 
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(ARCHIVE)"
