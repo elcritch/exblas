@@ -52,6 +52,7 @@ ifeq ($(CROSSCOMPILE),)
     TARGET=
 else
   # Crosscompiled build
+  DBG_VAR := $(shell echo $(TRIPLET))
   ifeq (arm,$(findstring arm,$(TRIPLET)))
     TARGET= TARGET=ARM7
   else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
