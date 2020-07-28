@@ -1,4 +1,4 @@
-defmodule ExBlas do
+defmodule ExBlas.MixProject do
   use Mix.Project
 
   @app :exblas
