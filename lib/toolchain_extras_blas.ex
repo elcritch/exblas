@@ -1,4 +1,4 @@
-defmodule ToolchainExtrasBlas do
+defmodule ExBlas do
   @moduledoc """
   Documentation for `ToolchainExtrasBlas`.
   """

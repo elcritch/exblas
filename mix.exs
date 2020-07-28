@@ -1,12 +1,11 @@
-defmodule ToolchainExtrasBlas do
+defmodule ExBlas do
   use Mix.Project
 
   @app :exblas
   @version "0.3.10"
-  @source_url "https://github.com/elcritch/toolchain_extras_blas"
+  @source_url "https://github.com/elcritch/exblas"
 
   {:ok, system_version} = Version.parse(System.version())
-  @elixir_version {system_version.major, system_version.minor, system_version.patch}
 
   def project do
     [
@@ -59,7 +58,7 @@ defmodule ToolchainExtrasBlas do
   defp deps() do
     [
       {:ex_doc, "~> 0.22", only: :docs, runtime: false},
-      {:nerves, "~> 1.5.4 or ~> 1.6.0", runtime: false},
+      # {:nerves, "~> 1.5.4 or ~> 1.6.0", runtime: false},
       #{:nerves_system_br, "1.12.1", runtime: false},
       {:elixir_make, "~> 0.6", runtime: false}
     ]
