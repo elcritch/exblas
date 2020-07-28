@@ -5,8 +5,6 @@ defmodule ExBlas do
   @version "0.3.10"
   @source_url "https://github.com/elcritch/exblas"
 
-  {:ok, system_version} = Version.parse(System.version())
-
   def project do
     [
       app: @app,
@@ -19,7 +17,6 @@ defmodule ExBlas do
       make_targets: ["all"],
       make_clean: ["clean"],
       docs: docs(),
-      aliases: [format: [&format_c/1, "format"]],
       start_permanent: Mix.env() == :prod,
       build_embedded: true,
       deps: deps(),
@@ -58,8 +55,6 @@ defmodule ExBlas do
   defp deps() do
     [
       {:ex_doc, "~> 0.22", only: :docs, runtime: false},
-      # {:nerves, "~> 1.5.4 or ~> 1.6.0", runtime: false},
-      #{:nerves_system_br, "1.12.1", runtime: false},
       {:elixir_make, "~> 0.6", runtime: false}
     ]
   end
@@ -73,15 +68,4 @@ defmodule ExBlas do
     ]
   end
 
-  defp format_c([]) do
-    case System.find_executable("astyle") do
-      nil ->
-        Mix.Shell.IO.info("Install astyle to format C code.")
-
-      astyle ->
-        System.cmd(astyle, ["-n", "src/*.c"], into: IO.stream(:stdio, :line))
-    end
-  end
-
-  defp format_c(_args), do: true
 end
