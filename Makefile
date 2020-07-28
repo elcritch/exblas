@@ -28,7 +28,7 @@ ARCHIVE = "$(BUILD)/OpenBLAS.tar.gz"
 
 TRIPLET = $(shell cc -dumpmachine)
 
-TARGET_CFLAGS = $(shell src/detect_target.sh)
+# TARGET_CFLAGS = $(shell src/detect_target.sh)
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
 CFLAGS += $(TARGET_CFLAGS)
 
@@ -52,7 +52,7 @@ ifeq ($(CROSSCOMPILE),)
     TARGET=
 else
   # Crosscompiled build
-  DBG_VAR := $(shell echo $(TRIPLET))
+  DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
   ifeq (arm,$(findstring arm,$(TRIPLET)))
     TARGET= TARGET=ARM7
   else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
@@ -76,7 +76,7 @@ compile: $(ARCHIVE)
 	env | sort > /tmp/env.openblas.log
 	echo $(TARGET) >> /tmp/target.openblas.log
 
-	tar -C "$(BUILD)/" -xvf "$(BUILD)/OpenBLAS.tar.gz" 
+	tar -C "$(BUILD)/" -xf "$(BUILD)/OpenBLAS.tar.gz" 
 	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && make $(TARGET) NO_LAPACKE=1 NOFORTRAN=1
 
 $(ARCHIVE): 
