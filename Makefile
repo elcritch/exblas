@@ -54,12 +54,12 @@ else
   # Crosscompiled build
   DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
   ifeq (arm,$(findstring arm,$(TRIPLET)))
-    TARGET=ARM7
+    TARGET=ARMV7
   else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
-    TARGET=ARM8
+    TARGET=ARMV8
   else
       # Not found
-    TARGET=ZEN
+    TARGET=
   endif
 endif
 
