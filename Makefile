@@ -18,6 +18,9 @@
 # LDFLAGS	linker flags for linking all binaries
 # ERL_LDFLAGS	additional linker flags for projects referencing Erlang libraries
 
+HOSTCC ?= $(shell which gcc)
+HOSTCC ?= $(shell which clang)
+
 # MIX_APP_PATH ?= ./build/
 VERSION = 0.3.10
 # TARGET = ARMV8
@@ -80,7 +83,7 @@ compile: $(ARCHIVE)
 
 	tar -C "$(BUILD)/" -xf "$(BUILD)/OpenBLAS.tar.gz" 
 	cd "$(BUILD)/OpenBLAS-$(VERSION)/" && \
-		make TARGET=$(TARGET) CC=$(CC) HOSTCC=$(gcc) CROSS=1 NO_LAPACKE=1 NO_LAPACK=1 NO_FORTRAN=1 NOFORTRAN=1
+		make TARGET=$(TARGET) CC=$(CC) HOSTCC=$(HOSTCC) CROSS=1 NO_LAPACKE=1 NO_LAPACK=1 NO_FORTRAN=1 NOFORTRAN=1
 
 $(ARCHIVE): 
 	curl https://codeload.github.com/xianyi/OpenBLAS/tar.gz/v$(VERSION) -o "$(ARCHIVE)"
