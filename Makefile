@@ -72,6 +72,7 @@ else
 endif
 # endif
 
+$(info "**** TARGET set to [$(TARGET)] ****")
 
 calling_from_make:
 	mix compile
