@@ -69,8 +69,6 @@ else
 endif
 # endif
 
-$(info "**** TARGET set to [$(TARGET)] ****")
-
 calling_from_make:
 	mix compile
 
@@ -79,6 +77,7 @@ all: $(PREFIX) $(BUILD) compile
 
 compile: $(ARCHIVE)
 	echo MIX_APP_PATH: $(MIX_APP_PATH)
+	echo TARGET: $(TARGET)
 	echo TRIPLET: $(TRIPLET)
 
 	# TODO: Debugging, remove
