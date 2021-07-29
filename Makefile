@@ -18,6 +18,9 @@
 # LDFLAGS	linker flags for linking all binaries
 # ERL_LDFLAGS	additional linker flags for projects referencing Erlang libraries
 
+set -x
+set -e
+
 HOSTCC ?= $(shell which gcc)
 HOSTCC ?= $(shell which clang)
 
