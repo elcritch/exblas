@@ -59,7 +59,7 @@ DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
 
 ifeq (arm,$(findstring arm,$(TRIPLET)))
   TARGET=ARMV7
-else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
+else ifeq (aarch64,$(findstring aarch64,$(TRIPLET)))
   TARGET=ARMV8
 else ifeq (aarch64,$(findstring x86_64,$(TRIPLET)))
   TARGET=ARMV8
