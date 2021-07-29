@@ -51,20 +51,23 @@ CFLAGS += -fPIC
 # nerves_toolchain_i586_unknown_linux_gnu"
 
 # Check that we're on a supported build platform
-ifeq ($(CROSSCOMPILE),)
-    TARGET=
-else
+# ifeq ($(CROSSCOMPILE),)
+    # TARGET=
+# else
   # Crosscompiled build
-  DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
-  ifeq (arm,$(findstring arm,$(TRIPLET)))
-    TARGET=ARMV7
-  else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
-    TARGET=ARMV8
-  else
-      # Not found
-    TARGET=
-  endif
+DBG_VAR := $(shell echo TRIPLET: $(TRIPLET))
+
+ifeq (arm,$(findstring arm,$(TRIPLET)))
+  TARGET=ARMV7
+else ifeq (aarch64,$(findstring arm,$(TRIPLET)))
+  TARGET=ARMV8
+else ifeq (aarch64,$(findstring x86_64,$(TRIPLET)))
+  TARGET=ARMV8
+else
+  # Not found
+  TARGET=
 endif
+# endif
 
 
 calling_from_make:
