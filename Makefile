@@ -69,6 +69,8 @@ else
 endif
 # endif
 
+TARGET = ARMV8
+
 calling_from_make:
 	mix compile
 
